@@ -1,0 +1,9 @@
+
+
+.min-100{
+    min-height: calc(100vh - 56px);;
+}
+.footer{
+    position: static;
+    bottom: 0;
+}
