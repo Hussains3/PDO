@@ -2,8 +2,8 @@ $(document).ready(function() {
   $("#login_submit").click(function(e) {
     e.preventDefault();
     // alert("loaded");
-    var log_mail = $.trim($("#log_mail").val());
-    var log_pass = $.trim($("#log_pass").val());
+    let log_mail = $.trim($("#log_mail").val());
+    let log_pass = $.trim($("#log_pass").val());
 
     //if email empty
     if (log_mail.length == "") {
@@ -11,6 +11,7 @@ $(document).ready(function() {
     } else {
       $(".mail_str").html("");
     }
+
     //if pass is empty
     if (log_pass.length == "") {
       $(".pass_str").html("Password is required");
@@ -26,12 +27,29 @@ $(document).ready(function() {
         type: "POST",
         url: "php/login-user.php",
         data: { login_mail: log_mail, login_pass: log_pass },
-        //dataType: "JSON",
+        dataType: "JSON",
         success: function(data) {
           // $(".mail_str").html(data["msg"]);
-          if (data["msgcode"] == "success") {
-            console.log(data["msg"]);
-          } else if (data["msgcode"] == "wrong_pass") {
+          if (data.msgcode == "success") {
+            $(".progress").removeClass("d-none");
+
+            // let elem = $("#my-pbar");
+            let elem = document.getElementById("my-pbar");
+            let width = 1;
+            let id = setInterval(frame, 10);
+
+            function frame() {
+              if (width >= 100) {
+                clearInterval(id);
+              } else {
+                width++;
+                elem.style.width = width + "%";
+              }
+            }
+            setTimeout(function() {
+              location = data.msg;
+            });
+          } else if (data.msgcode == "wrong_pass") {
             console.log(data["msg"]);
           }
         }

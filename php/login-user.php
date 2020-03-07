@@ -15,22 +15,18 @@
 
 
         if ($exist) {
+
             $db_role = $exist->role;
             $db_password = $exist->password;
 
             if ($db_role == "admin") {
-
-                echo json_encode([
-                    'msgcode'=>'wrong_pass',
-                    'msg'=>'Password verify is not working'
-                    ]);
                 if (password_verify ($form_pass,$db_password)) {
-                    $login = $user->userLogin($form_mai,$db_password);
+                    $login = $user->userLogin($form_mail,$db_password);
                     if ($login) {
                         $logedIn = createUserSession($login);
                         echo json_encode([
                             'msgcode'=>'success',
-                            'msg'=>'profile/index.php'
+                            'msg'=>'profile.php'
                             ]);
                     }else {
                         echo json_encode([
@@ -41,13 +37,13 @@
                 }else {
                     echo json_encode([
                         'msgcode'=>'wrong_pass',
-                        'msg'=>'Password verify is not working'
+                        'msg'=>'Please enter correct password'
                         ]);
                 }
             }else {
                 # code...
                 if (password_verify ($form_pass,$db_password)) {
-                    $login = $user->userLogin($form_mai,$db_password);
+                    $login = $user->userLogin($form_mail,$db_password);
                     if ($login) {
                         $logedIn = createUserSession($login);
                         echo json_encode([
@@ -76,6 +72,13 @@
     }
  
     login();
+    function createUserSession($user)
+    {
+        $_SESSION['id'] = $user->id;
+        $_SESSION['mail'] = $user->email;
+        $_SESSION['name'] = $user->name;
+        $_SESSION['role'] = $user->role;
+    }
 
 
 
